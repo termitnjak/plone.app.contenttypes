@@ -31,6 +31,9 @@ setup(name='plone.app.contenttypes',
           'plone.formwidget.querystring',
           'plone.app.widgets [dexterity]',
           'plone.namedfile [blobs]',
+          'plone.app.versioningbehavior',
+          'collective.dexteritydiff',
+          # -*- Extra requirements: -*-
       ],
       extras_require={
           'test': [
