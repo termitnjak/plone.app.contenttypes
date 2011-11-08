@@ -3,5 +3,7 @@
  <dependencies>
   <dependency>profile-plone.app.dexterity:default</dependency>
   <dependency>profile-plone.app.collection:default</dependency>
+  <dependency>profile-collective.cmfeditionsdexteritycompat:default</dependency>
+  <dependency>profile-plone.app.versioningbehavior:default</dependency>
  </dependencies>
 </metadata>

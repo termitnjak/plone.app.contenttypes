@@ -31,6 +31,9 @@ setup(name='plone.app.contenttypes',
           'plone.app.referenceablebehavior',
           'plone.app.relationfield',
           'plone.namedfile [blobs]',
+          'plone.app.versioningbehavior',
+          'collective.dexteritydiff',
+          'collective.cmfeditionsdexteritycompat',
           # -*- Extra requirements: -*-
       ],
       extras_require={
