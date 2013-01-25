@@ -30,6 +30,7 @@
      value="plone.app.dexterity.behaviors.exclfromnav.IExcludeFromNavigation"/>
   <element value="plone.app.relationfield.behavior.IRelatedItems"/>
   <element value="plone.app.dexterity.behaviors.nextprevious.INextPreviousToggle"/>
+  <element value="Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes"/>
  </property>
  <property name="schema"></property>
  <property name="model_source"></property>
