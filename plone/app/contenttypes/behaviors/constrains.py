@@ -47,7 +47,8 @@ class ConstrainTypesBehavior(object):
     def canSetConstrainTypes(self):
         mtool = getToolByName(self.context, 'portal_membership')
         member = mtool.getAuthenticatedMember()
-        return member.has_permission(ATCTPermissions.ModifyConstrainTypes, self)
+        return member.has_permission(ATCTPermissions.ModifyConstrainTypes, 
+            self.context)
 
     def getDefaultAddableTypes(self):
         return self._getAddableTypesFor(self.context, self.context)
