@@ -106,6 +106,18 @@
     permission="zope2.View"
     class=".utils.Utils"
     allowed_interface="plone.app.contenttypes.browser.utils.IUtils"
-    />  
+    />
+
+  <browser:page
+    name="folder_constraintypes_form"
+    for="*"
+    permission="zope2.View"
+    class=".constrains.ConstrainsFormView"
+    />
+
+  <utility
+    component=".constrains.ValidTypesFactory"
+    name="plone.app.contenttypes.constrains.validtypes"
+    />
 
 </configure>

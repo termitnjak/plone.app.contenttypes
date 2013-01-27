@@ -16,6 +16,9 @@ from plone.app.contenttypes.interfaces import IDocument
 from Products.CMFPlone.interfaces.constrains import ISelectableConstrainTypes
 from plone.app.contenttypes.behaviors import constrains
 from Products.CMFCore.utils import getToolByName
+from zope.interface.exceptions import Invalid
+
+from plone.app.contenttypes.browser.constrains import IConstrainForm, ConstrainsFormView
 
 from plone.app.contenttypes.testing import (
     PLONE_APP_CONTENTTYPES_INTEGRATION_TESTING,
@@ -43,22 +46,25 @@ class DocumentIntegrationTest(unittest.TestCase):
 
         self.types_tool = getToolByName(self.portal, 'portal_types')
         folder_type = self.types_tool.getTypeInfo(self.folder)
-        self.default_types = [t for t in self.types_tool.listTypeInfo() if 
-            t.isConstructionAllowed(self.folder) 
-            and folder_type.allowType(t.getId())]
+        self.default_types = [t for t in self.types_tool.listTypeInfo() if
+                              t.isConstructionAllowed(self.folder)
+                              and folder_type.allowType(t.getId())]
         assert len(self.default_types) > 3
         self.types_id_subset = [t.getId() for t in self.default_types][:2]
 
     def test_behavior_added(self):
-        self.assertIn('Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes',
-            self.types_tool.getTypeInfo(self.folder).behaviors)
-        self.assertTrue(constrains.IConstrainTypesBehaviorMarker.providedBy(self.folder))
+        self.assertIn('Products.CMFPlone.interfaces.'
+                      'constrains.ISelectableConstrainTypes',
+                      self.types_tool.getTypeInfo(self.folder).behaviors)
+        self.assertTrue(
+            constrains.IConstrainTypesBehaviorMarker.providedBy(self.folder))
         self.assertTrue(ISelectableConstrainTypes(self.folder))
 
     def test_constrainTypesModeDefault(self):
         behavior1 = ISelectableConstrainTypes(self.folder)
         behavior2 = ISelectableConstrainTypes(self.inner_folder)
-        self.assertEqual(constrains.DISABLED, behavior1.getConstrainTypesMode())
+        self.assertEqual(
+            constrains.DISABLED, behavior1.getConstrainTypesMode())
         self.assertEqual(constrains.ACQUIRE, behavior2.getConstrainTypesMode())
 
     def test_constrainTypesModeValidSet(self):
@@ -68,7 +74,8 @@ class DocumentIntegrationTest(unittest.TestCase):
 
     def test_constrainTypesModeInvalidSet(self):
         behavior = ISelectableConstrainTypes(self.folder)
-        self.assertRaises(ValueError, behavior.setConstrainTypesMode, "INVALID")
+        self.assertRaises(
+            ValueError, behavior.setConstrainTypesMode, "INVALID")
 
     def test_canSetConstrainTypesMode(self):
         behavior = ISelectableConstrainTypes(self.folder)
@@ -108,8 +115,8 @@ class DocumentIntegrationTest(unittest.TestCase):
         outer_behavior.setConstrainTypesMode(constrains.ENABLED)
         outer_behavior.setLocallyAllowedTypes([])
 
-        types = [t for t in self.default_types 
-            if t.getId() in self.types_id_subset]
+        types = [t for t in self.default_types
+                 if t.getId() in self.types_id_subset]
         type_ids = self.types_id_subset
 
         self.assertEqual(types, behavior.allowedContentTypes())
@@ -142,14 +149,17 @@ class DocumentIntegrationTest(unittest.TestCase):
 
     def test_locallyAllowedTypesInvalidSet(self):
         behavior = ISelectableConstrainTypes(self.folder)
-        self.assertRaises(ValueError, 
-            behavior.setLocallyAllowedTypes, self.types_id_subset + ['invalid'])
+        self.assertRaises(ValueError,
+                          behavior.setLocallyAllowedTypes,
+                          self.types_id_subset + ['invalid'])
 
     def test_locallyAllowedTypesInvalidValuesGetFiltered(self):
         behavior = ISelectableConstrainTypes(self.folder)
         behavior.setConstrainTypesMode(constrains.ENABLED)
-        self.folder._pac_locally_allowed_types = self.types_id_subset + ['invalid']
-        self.assertEqual(self.types_id_subset, behavior.getLocallyAllowedTypes())
+        self.folder._pac_locally_allowed_types = self.types_id_subset + \
+            ['invalid']
+        self.assertEqual(
+            self.types_id_subset, behavior.getLocallyAllowedTypes())
 
     def test_immediatelyAllowedTypesDefaultWhenDisabled(self):
         """
@@ -212,14 +222,17 @@ class DocumentIntegrationTest(unittest.TestCase):
 
     def test_immediatelyAllowedTypesInvalidSet(self):
         behavior = ISelectableConstrainTypes(self.folder)
-        self.assertRaises(ValueError, 
-            behavior.setImmediatelyAddableTypes, self.types_id_subset + ['invalid'])
+        self.assertRaises(ValueError,
+                          behavior.setImmediatelyAddableTypes,
+                          self.types_id_subset + ['invalid'])
 
     def test_immediatelyAllowedTypesInvalidValuesGetFiltered(self):
         behavior = ISelectableConstrainTypes(self.folder)
         behavior.setConstrainTypesMode(constrains.ENABLED)
-        self.folder._pac_immediately_addable_types = self.types_id_subset + ['invalid']
-        self.assertEqual(self.types_id_subset, behavior.getImmediatelyAddableTypes())
+        self.folder._pac_immediately_addable_types = self.types_id_subset + \
+            ['invalid']
+        self.assertEqual(
+            self.types_id_subset, behavior.getImmediatelyAddableTypes())
 
     def test_defaultAddableTypesDefault(self):
         behavior = ISelectableConstrainTypes(self.folder)
@@ -259,8 +272,8 @@ class DocumentIntegrationTest(unittest.TestCase):
 
         behavior = ISelectableConstrainTypes(self.inner_folder)
         behavior.setConstrainTypesMode(constrains.ACQUIRE)
-        self.assertEquals(self.types_id_subset, 
-            [x.getId() for x in behavior.allowedContentTypes()])
+        self.assertEquals(self.types_id_subset,
+                          [x.getId() for x in behavior.allowedContentTypes()])
 
     def test_allowedContentTypesExit4(self):
         """
@@ -271,8 +284,21 @@ class DocumentIntegrationTest(unittest.TestCase):
         behavior.setLocallyAllowedTypes(self.types_id_subset)
         behavior.setConstrainTypesMode(constrains.ENABLED)
 
-        self.assertEquals(self.types_id_subset, 
-            [x.getId() for x in behavior.allowedContentTypes()])
+        self.assertEquals(self.types_id_subset,
+                          [x.getId() for x in behavior.allowedContentTypes()])
+
+    def test_formschemainvariants(self):
+        class Data(object):
+            current_prefer = []
+            current_allow = []
+        bad = Data()
+        bad.current_prefer = []
+        bad.current_allow = ['1']
+        good = Data()
+        good.current_prefer = ['1']
+        good.current_allow = []
+        self.assertTrue(IConstrainForm.validateInvariants(good) is None)
+        self.assertRaises(Invalid, IConstrainForm.validateInvariants, bad)
 
 
 class FolderConstrainViewFunctionalText(unittest.TestCase):
@@ -302,6 +328,42 @@ class FolderConstrainViewFunctionalText(unittest.TestCase):
         self.assertTrue('My Folder' in self.browser.contents)
         self.assertTrue('Restrictions' in self.browser.contents)
 
+    def test_folder_restrictions_view(self):
+        self.browser.open(self.folder_url + '/folder_constraintypes_form')
+        self.assertTrue("Restrict what types" in self.browser.contents)
+        self.assertTrue("// Custom form constraints for constrain form" in
+                        self.browser.contents)
+        self.assertTrue("current_prefer_form" in self.browser.contents)
+
+    def test_form_save_restrictions(self):
+        self.browser.open(self.folder_url)
+        self.browser.getLink('Restrictions').click()
+        ctrl = lambda name: self.browser.getControl(name=name)
+        self.browser.getControl("Type restrictions").value = ['1']
+        ctrl("form.widgets.current_prefer:list").value = ["Document", "Folder"]
+        ctrl("form.widgets.current_allow:list").value = ["Document"]
+        self.browser.getControl("Save").click()
+        aspect = ISelectableConstrainTypes(self.folder)
+        self.assertEquals(1, aspect.getConstrainTypesMode())
+        self.assertEquals(["Document", "Folder"],
+                          aspect.getLocallyAllowedTypes())
+        self.assertEquals(["Folder"], aspect.getImmediatelyAddableTypes())
+
+    def test_form_bad_save(self):
+        aspect = ISelectableConstrainTypes(self.folder)
+        constraint_before = aspect.getConstrainTypesMode()
+        assert constraint_before != 1, ("Default constraint should not be 1. "
+                                        "Test is outdated.")
+
+        self.browser.open(self.folder_url)
+        self.browser.getLink('Restrictions').click()
+        ctrl = lambda name: self.browser.getControl(name=name)
+        self.browser.getControl("Type restrictions").value = ['1']
+        ctrl("form.widgets.current_prefer:list").value = ["Document"]
+        ctrl("form.widgets.current_allow:list").value = ["Document", "Folder"]
+        self.browser.getControl("Save").click()
+        self.assertEquals(constraint_before, aspect.getConstrainTypesMode())
+        self.assertTrue('Error' in self.browser.contents)
 
 
 def test_suite():
