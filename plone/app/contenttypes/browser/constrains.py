@@ -1,6 +1,6 @@
 from plone.autoform.form import AutoExtensibleForm
-from Products.ATContentTypes.interfaces import ISelectableConstrainTypes
 from Products.CMFPlone import PloneMessageFactory as PC_
+from Products.CMFPlone.interfaces import ISelectableConstrainTypes
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 from z3c.form import button
 from z3c.form import form
