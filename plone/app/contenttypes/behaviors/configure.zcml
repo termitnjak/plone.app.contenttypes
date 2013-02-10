@@ -16,15 +16,6 @@
     marker=".leadimage.ILeadImage"
     />
 
-  <plone:behavior
-    title="Folder Addable Constrains"
-    description="Restrict the content types that can be added to folderish content"
-    provides="Products.CMFPlone.interfaces.constrains.ISelectableConstrainTypes"
-    factory=".constrains.ConstrainTypesBehavior"
-    for="plone.dexterity.interfaces.IDexterityContainer"
-    marker=".constrains.IConstrainTypesBehaviorMarker"
-    />
-
   <browser:viewlet
     name="contentleadimage"
     for=".leadimage.ILeadImage"

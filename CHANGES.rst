@@ -4,6 +4,10 @@ Changelog
 1.0a2 (unreleased)
 ------------------
 
+- integrate constrain container allowed content types support from
+  plone.app.dexterity.
+  [rpatterson]
+
 - Move all templates from skins to browser views.
   [timo]
 
