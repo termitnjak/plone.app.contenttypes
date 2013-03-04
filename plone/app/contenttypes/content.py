@@ -1,6 +1,5 @@
 from zope.interface import implements
 
-from plone.dexterity.content import Item
 from plone.dexterity.content import Container
 
 from plone.app.contenttypes.interfaces import (
@@ -12,17 +11,20 @@ from plone.app.contenttypes.interfaces import (
     ILink,
     INewsItem
 )
+#
+# All types should be folderish regardless of whether
+# you can actually add content by default to them.
+#
 
-
-class Document(Item):
+class Document(Container):
     implements(IDocument)
 
 
-class Event(Item):
+class Event(Container):
     implements(IEvent)
 
 
-class File(Item):
+class File(Container):
     implements(IFile)
 
 
@@ -30,13 +32,13 @@ class Folder(Container):
     implements(IFolder)
 
 
-class Image(Item):
+class Image(Container):
     implements(IImage)
 
 
-class Link(Item):
+class Link(Container):
     implements(ILink)
 
 
-class NewsItem(Item):
+class NewsItem(Container):
     implements(INewsItem)
