@@ -29,6 +29,7 @@ setup(name='plone.app.contenttypes',
           'plone.app.dexterity',
           'plone.app.relationfield',
           'plone.formwidget.querystring',
+          'plone.app.widgets [dexterity]',
           'plone.namedfile [blobs]',
       ],
       extras_require={
