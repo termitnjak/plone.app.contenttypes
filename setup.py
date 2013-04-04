@@ -39,6 +39,7 @@ setup(name='plone.app.contenttypes',
           ],
           'migrate_atct': [
               'Products.contentmigration',
+              'plone.app.collection',
           ],
       },
       entry_points="""
