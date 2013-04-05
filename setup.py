@@ -36,6 +36,7 @@ setup(name='plone.app.contenttypes',
           'test': [
               'lxml',
               'plone.app.testing[robot]',
+              'plone.app.robotframework',
           ],
           'migrate_atct': [
               'Products.contentmigration',
