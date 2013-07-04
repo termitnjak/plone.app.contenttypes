@@ -49,6 +49,18 @@
                                                      title item_icon/title;
                                                      width item_icon/width;
                                                      height item_icon/height;" />
+                                <img tal:condition="python: item_type == 'File'"
+                                     tal:define="pac_util_view item/@@contenttype_utils;
+                                                 file_item python: item.getObject(); 
+                                                 content_type file_item/file/contentType|nothing;"
+                                     tal:attributes="src python: pac_util_view.getMimeTypeIcon(file_item.file); 
+                                             alt content_type;" />
+                                <img tal:condition="python: item_type == 'Image'"
+                                     tal:define="pac_util_view item/@@contenttype_utils;
+                                                 file_item python: item.getObject(); 
+                                                 content_type file_item/image/contentType|nothing;"
+                                     tal:attributes="src python: pac_util_view.getMimeTypeIcon(file_item.image); 
+                                             alt content_type;" />
                                 <a href="#"
                                    tal:attributes="href python: item_type in use_view_action and item_url+'/view' or item_url;
                                                    class string:$item_wf_state_class $item_type_class;
