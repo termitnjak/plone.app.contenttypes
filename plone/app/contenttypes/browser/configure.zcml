@@ -140,6 +140,13 @@
     />
 
   <browser:page
+    name="folder_full_view_item"
+    for="plone.app.contenttypes.interfaces.IDocument"
+    template="templates/folder_full_view_item.pt"
+    permission="zope2.View"
+    />
+
+  <browser:page
     name="folder_summary_view"
     for="plone.app.contenttypes.interfaces.IFolder"
     layer="plone.app.contenttypes.interfaces.IPloneAppContenttypesLayer"

@@ -34,7 +34,7 @@
 
         <h2 class="headline">
             <a href="#" class="summary url" tal:content="context/Title"
-               tal:attributes="href python:test(item_type in use_view_action, item_url+'/view', item_url);">
+               tal:attributes="href python:item_type in use_view_action and item_url+'/view' or item_url;">
                Title or id
              </a>
         </h2>
