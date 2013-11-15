@@ -141,7 +141,16 @@
 
   <browser:page
     name="folder_full_view_item"
-    for="plone.app.contenttypes.interfaces.IDocument"
+    for="plone.dexterity.interfaces.IDexterityContent"
+    template="templates/folder_full_view_item.pt"
+    permission="zope2.View"
+    />
+
+  <!-- Kept for backwards compatibility with Archetypes content types -->
+
+  <browser:page
+    name="folder_full_view_item"
+    for="Products.Archetypes.interfaces.IBaseObject"
     template="templates/folder_full_view_item.pt"
     permission="zope2.View"
     />
