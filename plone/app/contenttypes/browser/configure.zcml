@@ -2,6 +2,7 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:plone="http://namespaces.plone.org/plone"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="plone">
 
   <include package="plone.app.contentmenu" />
@@ -149,6 +150,7 @@
   <!-- Kept for backwards compatibility with Archetypes content types -->
 
   <browser:page
+    zcml:condition="installed Products.Archetypes"
     name="folder_full_view_item"
     for="Products.Archetypes.interfaces.IBaseObject"
     template="templates/folder_full_view_item.pt"
