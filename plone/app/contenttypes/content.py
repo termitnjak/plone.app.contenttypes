@@ -60,7 +60,7 @@ class Collection(Item):
         return ICollection_behavior(self).results(**kwargs)
 
 
-class Document(Item):
+class Document(Container, Collection):
     implements(IDocument)
 
 
